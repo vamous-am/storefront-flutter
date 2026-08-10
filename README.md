@@ -1,4 +1,4 @@
-# fake_store_app
+# StoreFront app
 
 A new Flutter project.
 
