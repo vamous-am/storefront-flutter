@@ -33,7 +33,7 @@ class FakeStoreApp extends ConsumerWidget {
     final authState = ref.watch(authProvider);
 
     return MaterialApp(
-      title: 'Fake Store',
+      title: 'Store Front',
       theme: AppTheme.lightTheme,
       routes: {
         '/login': (context) => const LoginScreen(),

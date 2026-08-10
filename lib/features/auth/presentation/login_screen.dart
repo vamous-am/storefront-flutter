@@ -77,7 +77,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Welcome to Fake Store',
+                        'Welcome to Store Front',
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                               color: Theme.of(context).colorScheme.onSurface,

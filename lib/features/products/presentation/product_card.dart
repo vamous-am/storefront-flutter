@@ -33,9 +33,12 @@ class ProductCard extends StatelessWidget {
               child: Container(
                 color: Colors.white,
                 padding: const EdgeInsets.all(12.0),
-                child: ProductImage(
-                  imageUrl: product.image,
-                  fit: BoxFit.contain,
+                child: Hero(
+                  tag: 'product-image-${product.id}',
+                  child: ProductImage(
+                    imageUrl: product.image,
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
             ),
