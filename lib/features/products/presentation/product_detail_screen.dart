@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../models/cart_item.dart';
 import '../../../widgets/error_state.dart';
 import '../../../widgets/loading_indicator.dart';
 import '../../../widgets/product_image.dart';
+import '../../cart/presentation/cart_provider.dart';
 import 'product_detail_provider.dart';
 
 class ProductDetailScreen extends ConsumerWidget {
@@ -112,10 +114,24 @@ class ProductDetailScreen extends ConsumerWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: ElevatedButton(
                     onPressed: () {
+                      ref.read(cartProvider.notifier).addItem(
+                        CartItem(
+                          productId: product.id,
+                          title: product.title,
+                          price: product.price,
+                          image: product.image,
+                          quantity: 1,
+                        ),
+                      );
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('${product.title} added to cart!'),
                           duration: const Duration(seconds: 2),
+                          action: SnackBarAction(
+                            label: 'View Cart',
+                            onPressed: () =>
+                                Navigator.pushNamed(context, '/cart'),
+                          ),
                         ),
                       );
                     },

@@ -6,8 +6,10 @@ import 'core/theme/app_theme.dart';
 import 'features/auth/data/auth_repository.dart';
 import 'features/auth/presentation/auth_provider.dart';
 import 'features/auth/presentation/login_screen.dart';
+import 'features/cart/presentation/cart_screen.dart';
 import 'features/products/presentation/product_detail_screen.dart';
 import 'features/products/presentation/product_list_screen.dart';
+import 'features/profile/presentation/profile_screen.dart';
 import 'widgets/error_state.dart';
 import 'widgets/loading_indicator.dart';
 
@@ -20,13 +22,13 @@ void main() async {
       overrides: [
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       ],
-      child: const FakeStoreApp(),
+      child: const StoreFrontApp(),
     ),
   );
 }
 
-class FakeStoreApp extends ConsumerWidget {
-  const FakeStoreApp({super.key});
+class StoreFrontApp extends ConsumerWidget {
+  const StoreFrontApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,11 +36,14 @@ class FakeStoreApp extends ConsumerWidget {
 
     return MaterialApp(
       title: 'Store Front',
+      debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       routes: {
         '/login': (context) => const LoginScreen(),
         '/products': (context) => const ProductListScreen(),
         '/product-detail': (context) => const ProductDetailScreen(),
+        '/cart': (context) => const CartScreen(),
+        '/profile': (context) => const ProfileScreen(),
       },
       home: authState.when(
         data: (state) {

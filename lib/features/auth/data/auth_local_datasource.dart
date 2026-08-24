@@ -27,5 +27,7 @@ class AuthLocalDataSource {
   Future<void> clear() async {
     await _sharedPreferences.remove(_tokenKey);
     await _sharedPreferences.remove(_usernameKey);
+    // Remove cached profile so the next login always resolves a fresh user.
+    await _sharedPreferences.remove('cached_user');
   }
 }

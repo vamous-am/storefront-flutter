@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../widgets/empty_state.dart';
 import '../../../widgets/error_state.dart';
 import '../../../widgets/loading_indicator.dart';
-import '../../auth/presentation/auth_provider.dart';
+import '../../cart/presentation/cart_provider.dart';
 import 'category_filter.dart';
 import 'product_card.dart';
 import 'products_provider.dart';
@@ -20,16 +20,48 @@ class ProductListScreen extends ConsumerWidget {
     final selectedCategory = ref.watch(selectedCategoryProvider);
     final isFiltered = searchQuery.isNotEmpty || selectedCategory != null;
 
+    final cartItemCount = ref.watch(cartProvider).fold(0, (sum, item) => sum + item.quantity);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Store Front'),
         actions: [
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.shopping_cart_outlined),
+                tooltip: 'Cart',
+                onPressed: () => Navigator.pushNamed(context, '/cart'),
+              ),
+              if (cartItemCount > 0)
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: Container(
+                    padding: const EdgeInsets.all(2),
+                    constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.error,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      '$cartItemCount',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+            ],
+          ),
           IconButton(
-            icon: const Icon(Icons.logout_outlined),
-            tooltip: 'Logout',
-            onPressed: () {
-              ref.read(authProvider.notifier).logout();
-            },
+            icon: const Icon(Icons.person_outline),
+            tooltip: 'Profile',
+            onPressed: () => Navigator.pushNamed(context, '/profile'),
           ),
         ],
       ),
