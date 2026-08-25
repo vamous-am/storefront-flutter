@@ -1,17 +1,61 @@
-# StoreFront app
+# StoreFront App
 
-A new Flutter project.
+A Flutter e-commerce app built against the [FakeStore API](https://fakestoreapi.com). Covers authentication, product browsing, cart management, and user profiles.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- **Auth** — JWT login via FakeStore API. Token and username persisted in SharedPreferences. Logout clears token, username, and cached profile.
+- **Product list** — Paginated product grid with search and category filter. Live cart badge in the app bar.
+- **Product detail** — Full product info with an "Add to Cart" button and a snackbar shortcut to the cart screen.
+- **Cart** — Add, remove, and update quantities. Totals computed in-memory; state persisted to SharedPreferences fire-and-forget. Clear-all with a confirmation dialog.
+- **Profile** — Resolves the logged-in user by filtering `/users` client-side (FakeStore has no username lookup endpoint). Result cached in SharedPreferences and cleared on logout. Refresh button bypasses cache.
 
-A few resources to get you started if this is your first Flutter project:
+## Tech stack
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+| Concern | Choice |
+|---|---|
+| State management | `flutter_riverpod` 2.x (`Notifier` / `AsyncNotifier`) |
+| Networking | `http` via a thin `ApiClient` wrapper |
+| Local storage | `shared_preferences` |
+| Image caching | `cached_network_image` |
+| Linting | `flutter_lints` |
+| Test mocking | `mocktail` |
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Project structure
+
+```
+lib/
+├── core/
+│   ├── constants/   # API base URL
+│   ├── errors/      # Exception types
+│   ├── network/     # ApiClient (http wrapper)
+│   ├── theme/       # AppTheme (Material 3)
+│   └── utils/       # Debouncer
+├── features/
+│   ├── auth/        # Login, AuthRepository, AuthLocalDataSource, AuthNotifier
+│   ├── cart/        # CartLocalDataSource, CartRepository, CartNotifier, CartScreen
+│   ├── products/    # ProductRepository, ProductsNotifier, ProductListScreen, ProductDetailScreen
+│   └── profile/     # ProfileRepository, ProfileNotifier, ProfileScreen
+├── models/          # Product, CartItem, User
+├── widgets/         # EmptyState, ErrorState, LoadingIndicator, ProductImage
+└── main.dart        # ProviderScope, route table, StoreFrontApp
+```
+
+## Getting started
+
+```bash
+flutter pub get
+flutter run
+```
+
+Requires Flutter SDK `^3.12.2`. No additional setup — the app hits the public FakeStore API with no API key.
+
+## Routes
+
+| Route | Screen |
+|---|---|
+| `/login` | LoginScreen |
+| `/products` | ProductListScreen |
+| `/product-detail` | ProductDetailScreen |
+| `/cart` | CartScreen |
+| `/profile` | ProfileScreen |
